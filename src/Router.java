@@ -35,9 +35,18 @@ public class Router {
         ports[portnum].connect(w);
     }
 
+    /** Sets an address and netmask for an interface */
+    public void setInterfaceAddress(String id, int addr, int net, int mask) {
+        ctl.ifaceAddrNetSet(id, addr, net, mask);
+    }
+
     /** Receives a packet to process */
     public void receive(Packet p) {
         ctl.receive(p);
+    }
+    /** Sends out a packet from this router */
+    public void send(Packet p) {
+        fwd.process(p, null);
     }
 
     /** Turns the router on */
