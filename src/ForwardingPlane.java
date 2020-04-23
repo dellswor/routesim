@@ -1,4 +1,6 @@
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.ArrayDeque;
 
 /** Representation of the router forwarding plane 
  *  <p>Currently lossless and allows infinitely many packets to be queued
@@ -6,6 +8,8 @@ import java.util.HashMap;
 public class ForwardingPlane {
     /** Router supported by this Forwarding Plane */
     Router router;
+    /** Routing table to map traffic with */
+    RoutingTable table;
     /** Interfaces traffic can move on */
     HashMap<String,Interface> ifaces;
     /** Queued packets */
@@ -18,17 +22,18 @@ public class ForwardingPlane {
     /** Create a new instance 
      *@param r the router this forwarding plane supports
      */
-    public ForwardingPlane(Router r) {
+    public ForwardingPlane(Router r, RoutingTable rt) {
         router = r;
+        table = rt;
         ifaces = new HashMap<String,Interface>();
-        queues = new HashMap<String,Interface>();
+        queues = new HashMap<String,ArrayDeque<Packet>>();
         localAddresses = new HashSet<Integer>();
     }
-    
+
     /** Stop forwarding */
     public void stop() {
         running = false;
-        queues = new HashMap<String,Interface>();
+        queues = new HashMap<String,ArrayDeque<Packet>>();
     }
     /** Start forwarding */
     public void start() {
@@ -53,7 +58,7 @@ public class ForwardingPlane {
         }
         String iface = table.apply(p);
         if(iface != null) {
-            queues.put(iface, p);
+            queues.get(iface).add(p);
         } else {
             router.log("Unmatched destination",p);
         }

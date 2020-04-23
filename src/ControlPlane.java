@@ -2,22 +2,25 @@ import java.util.HashMap;
 
 /** Representation of the router's control plane */
 public class ControlPlane {
+    /** The router this control is on */
+    Router router;
     /** The routing algorithm in use */
-    RoutingLogic algo;
+    RouterLogic algo;
     /** The cached interface state */
     HashMap<Interface,Boolean> ifacestate;
     /** The interfaces the control plane knows about... May not be used */
     HashMap<String,Interface> ifaces;
 
     /** Create a new instance */
-    public ControlPlane(RoutingLogic algo) {
+    public ControlPlane(Router r, RouterLogic algo) {
         this.algo = algo;
+        router = r;
         ifacestate = new HashMap<Interface,Boolean>();
         ifaces = new HashMap<String,Interface>();
     }
     
     /** Adds an interface to the control plane */
-    public addInterface(Interface iface) {
+    public void addInterface(Interface iface) {
         ifacestate.put(iface, iface.alive());
         ifaces.put(iface.id, iface);
     }
@@ -35,7 +38,7 @@ public class ControlPlane {
             router.log("TTL expired",p);
             return;
         }
-        algo.recieve(p);
+        algo.receive(p);
     }
 
     /** respond to a simulation clock tick */

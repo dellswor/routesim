@@ -22,9 +22,9 @@ public class Wire {
         this.rate = rate;
         this.delayms = delay;
         cut = true;
-        ifaces = Interface[2];
-        sendOk = long[2];
-        inflight = Packet[2];
+        ifaces = new Interface[2];
+        sendOk = new long[2];
+        inflight = new Packet[2];
     }
 
     /** Connects this cable to an interface
@@ -60,11 +60,11 @@ public class Wire {
     /** Respond to a simulator clock tick */
     public void tick() {
         if(cut) { return; }
-        if(inflight[0] != null && sendOk<Simulator.now()) {
+        if(inflight[0] != null && sendOk[0]<Simulator.now()) {
             ifaces[1].receive(inflight[0]);
             inflight[0] = null;
         }
-        if(inflight[1] != null && sendOk<Simulator.now()) {
+        if(inflight[1] != null && sendOk[1]<Simulator.now()) {
             ifaces[0].receive(inflight[1]);
             inflight[1] = null;
         }
@@ -73,8 +73,8 @@ public class Wire {
     /** Cuts the wire */
     public void cut() {
         cut = true;
-        sendOk = long[2];
-        inflight = Packet[2];
+        sendOk = new long[2];
+        inflight = new Packet[2];
     }
     /** Mends the wire */
     public void mend() {

@@ -24,7 +24,7 @@ public final class TableEntry {
      */
     public String match(Packet p) {
         int dst = p.dst;
-        if( (dst & mask) ^ net == 0 ) {
+        if( ((dst & mask) ^ net) == 0 ) {
             return iface;
         }
         return null;
@@ -37,9 +37,10 @@ public final class TableEntry {
                 return true;
             }
         } catch(ClassCastException e) {
-            return false;
         }
+        return false;
     }
+
     public int hashCode() {
         return iface.hashCode() ^ mask ^ net;
     }

@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /** Class that represents a packet traversing the network */
 public class Packet {
     /** The address of the sender in the packet */
@@ -20,12 +22,12 @@ public class Packet {
      *@param dport destination port
      *@param data the packet payload
      */
-    public Packet(Address src, int sport, Address dst, int dport, byte[] data) {
+    public Packet(int src, int sport, int dst, int dport, byte[] data) {
         this.src = src;
         this.sport = sport;
         this.dst = dst;
         this.dport = dport;
-        this.data = Array.copyOf(data);
+        this.data = Arrays.copyOf(data,data.length);
         this.ttl = 15;
     }
     /** Creates a new instance
@@ -36,12 +38,12 @@ public class Packet {
      *@param data the packet payload
      *@param ttl the time to live for the packet
      */
-    private Packet(Address src, int sport, Address dst, int dport, byte[] data, int ttl) {
+    private Packet(int src, int sport, int dst, int dport, byte[] data, int ttl) {
         this.src = src;
         this.sport = sport;
         this.dst = dst;
         this.dport = dport;
-        this.data = Array.copyOf(data);
+        this.data = Arrays.copyOf(data, data.length);
         this.ttl = ttl-1;
     }
 
@@ -55,6 +57,12 @@ public class Packet {
      *  cannot override the method...
      */
     public final byte[] getData() {
-        return Array.copyOf(data, data.length);
+        return data;
+    }
+
+    /** Compute the size of the packet
+     */
+    public final int size() {
+        return data.length + 36;
     }
 }

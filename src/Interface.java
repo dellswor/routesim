@@ -28,15 +28,15 @@ public class Interface {
     /** "Plugs" a wire into this interface
      *@param wire the wire to connect
      */
-    public void setWire(Wire wire) {
+    public void connect(Wire wire) {
         this.wire = wire;
         wire.addEndpoint(this);
     }
 
     /** Receives a packet from the wire
-     *@param p the packet recieved
+     *@param p the packet received
      */
-    public void recievePacket(Packet p) {
+    public void receive(Packet p) {
         forwarder.process(p, this);
     }
     /** Sends a packet to the wire
@@ -44,12 +44,9 @@ public class Interface {
      */
     public void sendPacket(Packet p) {
         if(wire==null) {
-            control.ifaceDown(this);
+            return;
         }
-        success = wire.process(p, this);
-        if(!success) {
-            control.ifaceDown(this);
-        }
+        wire.process(p, this);
     }
 
     /** is the link ready to send? */

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /** Routing table used to match packets with interfaces/destinations */
 public class RoutingTable {
     /** The size of the routing table */
@@ -38,7 +40,7 @@ public class RoutingTable {
         } else {
             entries.add(idx, e);
         }
-        if(entries.size>size) {
+        if(entries.size()>size) {
             entries.remove(size);
         }
     }
@@ -47,7 +49,7 @@ public class RoutingTable {
      *@param idx index to remove from
      */
     public void remove(int idx) {
-        if(idx>=entries.size) {
+        if(idx>=entries.size()) {
             return;
         }
         entries.remove(idx);
