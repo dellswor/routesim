@@ -86,6 +86,9 @@ public class Network {
      *@return the number of packets transmitted in the step
      */
     public static int tick() {
+        for(Node n: me.nodes) {
+            n.tick();
+        }
         int evs = me.events.size();
         for(int i=0; i<evs; i++) {
             Event e = me.events.removeFirst();

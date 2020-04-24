@@ -51,6 +51,11 @@ public class Node {
         }
     }
 
+    /** Process a simulation tick/step */
+    public void tick() {
+        algo.tick();
+    }
+
     /** Dumps the routing table at this node */
     public void dumpTable() {
         algo.dumpRoutingTable();
